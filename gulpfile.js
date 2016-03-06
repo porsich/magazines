@@ -2,7 +2,8 @@
 var gulp = require('gulp'),
     watch = require('gulp-watch'),
     gulpFilter = require('gulp-filter'),
-    plumber = require('gulp-plumber');
+    plumber = require('gulp-plumber'),
+    child = require('child_process');
 
 var path = {
     build: { //Тут мы укажем куда складывать готовые после сборки файлы
@@ -37,14 +38,17 @@ var path = {
     app: 'backend/app.js'
 };
 
+gulp.task('server', function() {
+  var server = child.spawn('npm', ['start', 'DEBUG=backend:*']);
+});
+
 gulp.task('backend:build', function () {
-  var filter = gulpFilter('**/*.js');
 
   return gulp.src([path.backend.src, path.app], { base: './' })
     .pipe(plumber())
-    .pipe(filter)
     .pipe(gulp.dest(path.backend.build));
 });
+
 
 gulp.task('watch', function(){
     watch([path.watch.server], function(event, cb) {
@@ -53,4 +57,4 @@ gulp.task('watch', function(){
 });
 
 
-gulp.task('default', ['watch']);
+gulp.task('default', ['watch', 'server']);

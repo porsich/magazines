@@ -9,6 +9,8 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var magazines = require('./routes/magazines');
 
+var email = require('./routes/emailSender');
+
 var app = express();
 
 // view engine setup
@@ -24,7 +26,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/users', users);
+app.use('/email', email);
 app.use('/magazines', magazines);
 
 // catch 404 and forward to error handler
